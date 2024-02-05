@@ -28,6 +28,12 @@ jobs:
                  username: ${{ github.actor }}
                  password: ${{ secrets.MY_GITHUB_TOKEN }}
 
+          - name: Build Docker image
+            run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
+
+          - name: Push Docker image to registry
+            run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
           - name: Extract meta data(tags,labels)from Dockerfile
             id: meta
             uses: docker/metadata-action@v5
